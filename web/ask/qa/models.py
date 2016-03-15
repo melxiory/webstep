@@ -4,6 +4,13 @@ from django.contrib.auth.models import User
 
 # Create your models here.
 
+class QuestionManager(models.Manager):
+	def resent_questions(self):
+		return self.order_by('-added_at')
+
+	def popular_questions(self):
+		return self.order_by('-rating')
+
 # Question - вопрос
 # title - заголовок вопроса
 # text - полный текст вопроса
@@ -17,7 +24,9 @@ class Question(models.Model):
 	added_at = models.DateTimeField()
 	rating = models.IntegerField()
 	author = models.ForeignKey(User, related_name='question_user')
-	likes = models.ManyToManyField(User, related_name='%(app_label)s_%(class)s_related', null=True)
+	likes = models.ManyToManyField(User, related_name='%(app_label)s_%(class)s_related', blank=True)
+
+	objects = QuestionManager()
 
 # Answer - ответ
 # text - текст ответа

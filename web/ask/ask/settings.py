@@ -66,12 +66,6 @@ DATABASES = {
         'PASSWORD': '',
         'HOST': 'localhost',
         'PORT': '',
-        # 'OPTIONS': {
-        #     'database' : 'qa',
-        #     'user' : 'root',
-        #     'password' : '',
-        #     'default-character-set' : 'utf-8'
-        #     },
     }
 }
 
