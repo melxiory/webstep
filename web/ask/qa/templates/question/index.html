@@ -1,5 +1,5 @@
 {% for question in questions %}
-    <li>{{ question.title }}<a href="/question/{{ question.id }}/">{{ question.text }}</a></li>
+    <li>{{ question.title }}<a href="{{ question.get_absolute_url }}">{{ question.text }}</a></li>
 {% endfor %}
 
 <div class="pagination">

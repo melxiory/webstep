@@ -3,4 +3,6 @@
 {% for answer in question.answer_set.all %}
 	<p>{{ answer.text }}</p>
 {% endfor %}
+<a class="btn btn-default" href="{% url 'answer_add' id=question.id %}">Add comment</a>
+
 

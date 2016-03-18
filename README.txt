@@ -143,3 +143,80 @@ URL = /question/5/
 Страница одного вопроса. На этой странице должны выводится заголовок (title), текст (text) вопроса и все ответы на данный вопрос, без пагинации.  В случае неправильного id вопроса view должна возвращать 404.
 
 3) Создайте простейшие шаблоны для отображения данных этих страниц.
+----------------------------------------------------------------------------------------------------
+Обработка форм
+
+1) Разверните репозиторий со своим проектом в директориию /home/box
+
+2) В файле qa/forms.py  создайте следующие формы для добавления вопроса и ответа.
+
+AskForm - форма добавления вопроса
+title - поле заголовка
+text - поле текста вопроса
+
+AnswerForm - форма добавления ответа
+text - поле текста ответа
+question - поле для связи с вопросом
+
+Имена классов форм и полей важны! Конструкторы форм должны получать стандартные для Django-форм аргументы, т.е. должна быть возможность создать объект формы как AskForm() или AnswerForm(). На данном этапе формы могут не учитывать авторизацию пользователей, т.е. создавать вопросы и ответы с произвольным либо пустым автором. В формах реализуйте необходимые методы для валидации и сохранения данных (clean и save)
+
+3) Создайте view и шаблоны для отображения и сохранения форм
+
+URL = /ask/
+
+При GET запросе - отображается форма AskForm, при POST запросе форма должна создавать новый вопрос и перенаправлять на страницу вопроса - /question/123/
+
+URL = /question/123/
+
+При GET запросе должна отображаться страница ответа и на ней AnswerForm
+
+URL = /answer/
+
+При POST запросе форма AnswerForm добавляет новый ответ и перенаправляет на страницу вопроса /question/123/
+
+Для поддержки CSRF защиты - выведите в шаблонах форм {% csrf_token %}.
+
+import os                                                                       
+import unittest                                                                 
+import sys                                                                      
+sys.path.append('/home/box/web/ask')                                            
+os.environ['DJANGO_SETTINGS_MODULE'] = 'ask.settings'                           
+                                                                                
+from django import forms
+
+class TestImport(unittest.TestCase):                                            
+    def test_import(self):                                                      
+        import qa.forms
+
+class TestAskForm(unittest.TestCase):                                           
+    def test_from(self):                                                        
+        from qa.forms import AskForm                                            
+        assert issubclass(AskForm, (forms.Form, forms.ModelForm)), "AskForm does
+ not inherits from Form or ModelForm"                                           
+        f = AskForm()                                                           
+        title = f.fields.get('title')                                           
+        assert title is not None, "AskForm does not have title field"           
+        assert isinstance(title, forms.CharField), "title field is not an instan
+ce of forms.CharField"                                                          
+        text = f.fields.get('text')                                             
+        assert text is not None, "AskForm does not have text field"             
+        assert isinstance(text, forms.CharField), "text field is not an instance
+ of forms.CharField"
+
+ class TestAnswerForm(unittest.TestCase):                                        
+    def test_from(self):                                                        
+        from qa.forms import AnswerForm                                         
+        assert issubclass(AnswerForm, (forms.Form, forms.ModelForm)), "AnswerFor
+m does not inherits from Form or ModelForm"                                     
+        f = AnswerForm()                                                        
+        text = f.fields.get('text')                                             
+        assert text is not None, "AnswerForm does not have text field"          
+        assert isinstance(text, forms.CharField), "text field is not an instance
+ of forms.CharField"                                                            
+        question = f.fields.get('question')                                     
+        assert question is not None, "AnswerForm does not have question field"  
+        assert isinstance(question, (forms.IntegerField, forms.ChoiceField)), "a
+uthor field is not an instalce of IntegerField or ChoiceField"                  
+                                                                                
+suite = unittest.TestLoader().loadTestsFromTestCase(globals().get(sys.argv[1])) 
+unittest.TextTestRunner(verbosity=0).run(suite)

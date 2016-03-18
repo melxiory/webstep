@@ -23,10 +23,15 @@ class Question(models.Model):
 	text = models.TextField()
 	added_at = models.DateTimeField(auto_now_add=True)
 	rating = models.IntegerField(default=1)
-	author = models.ForeignKey(User, related_name='question_user')
+	author = models.ForeignKey(User, related_name='question_user', blank=True, null=True)
 	likes = models.ManyToManyField(User, related_name='%(app_label)s_%(class)s_related', blank=True)
 
 	objects = QuestionManager()
+
+	@models.permalink
+	def get_absolute_url(self):
+		return ('qa.views.question_details', [str(self.id)])
+
 
 # Answer - ответ
 # text - текст ответа
@@ -37,4 +42,4 @@ class Answer(models.Model):
 	text = models.TextField()
 	added_at = models.DateTimeField(auto_now_add=True)
 	question =  models.ForeignKey(Question)
-	author = models.ForeignKey(User)
+	author = models.ForeignKey(User, blank=True, null=True)

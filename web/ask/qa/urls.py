@@ -14,4 +14,7 @@ urlpatterns = [
  	url(r'^$', views.index, name='index'),
  	# ex: /question/123/
     url(r'^(?P<question_id>[0-9]+)/$', views.question_details, name='details'),
+    url(r'^(?P<id>\d+)/answer/$', views.answer_add, name='answer_add'),
+
+
 ]
