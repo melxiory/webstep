@@ -22,8 +22,13 @@ class Question(models.Model):
 	title = models.CharField(max_length=255)
 	text = models.TextField()
 	added_at = models.DateTimeField(auto_now_add=True)
+<<<<<<< HEAD
 	rating = models.IntegerField(default=1)
 	author = models.ForeignKey(User, related_name='question_user', blank=True, null=True)
+=======
+	rating = models.BigIntegerField(default=1)
+	author = models.ForeignKey(User, related_name='question_user')
+>>>>>>> 671ab786dfc221c375d0f432dbea56d46ba4a351
 	likes = models.ManyToManyField(User, related_name='%(app_label)s_%(class)s_related', blank=True)
 
 	objects = QuestionManager()
@@ -42,4 +47,8 @@ class Answer(models.Model):
 	text = models.TextField()
 	added_at = models.DateTimeField(auto_now_add=True)
 	question =  models.ForeignKey(Question)
+<<<<<<< HEAD
 	author = models.ForeignKey(User, blank=True, null=True)
+=======
+	author = models.ForeignKey(User)
+>>>>>>> 671ab786dfc221c375d0f432dbea56d46ba4a351
