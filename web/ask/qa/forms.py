@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from django.forms import ModelForm
+from django import forms
 
 from .models import Question, Answer
 
@@ -34,6 +35,10 @@ class AnswerForm(ModelForm):
 	class Meta:
 		model = Answer
 		fields = ['text', 'question']
+		widgets = {'question': forms.HiddenInput()}
+
+	# def __init__(self, question):
+	# 	self.question = question
 
 	def clean(self):
 		return super(AnswerForm, self).clean()

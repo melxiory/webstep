@@ -24,8 +24,9 @@ def popular(request, *args, **kwargs):
 @require_GET
 def question_details(request, question_id):
 	question = get_object_or_404(Question, id=question_id)
+	form = AnswerForm(initial = {'question': question_id})
 	
-	return render(request, 'question/details.html', {'question': question,})
+	return render(request, 'question/details.html', {'question': question, 'form': form})
 
 # @login_required
 def question_add(request):
@@ -36,10 +37,10 @@ def question_add(request):
 			url = question.get_absolute_url()
 			return HttpResponseRedirect(url)
 	else:
-		form = AskForm()
+		form = AskForm(null)
 	return render(request, 'question/add.html', {'form' : form})
 
-def answer_add(request, id):
+def answer_add(request):
 	if request.method == 'POST':
 		form = AnswerForm(request.POST)
 		if form.is_valid():
