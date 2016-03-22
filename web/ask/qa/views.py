@@ -37,7 +37,7 @@ def question_add(request):
 			url = question.get_absolute_url()
 			return HttpResponseRedirect(url)
 	else:
-		form = AskForm(null)
+		form = AskForm()
 	return render(request, 'question/add.html', {'form' : form})
 
 def answer_add(request):
