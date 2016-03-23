@@ -3,6 +3,7 @@ from django.forms import ModelForm
 from django import forms
 
 from .models import Question, Answer
+from django.contrib.auth.models import User
 
 # AskForm - форма добавления вопроса
 # title - поле заголовка
@@ -12,17 +13,13 @@ class AskForm(ModelForm):
 		model = Question
 		fields = ['title', 'text']
 
-	# def __init__(self, user, **kwargs):
-	# 	self._user = user
-	# 	super(AskForm, self).__init__(**kwargs)
-
 	def clean(self):
 		return super(AskForm, self).clean()
 
 
 	def save(self):
-		# self.cleaned_data['author'] = self._user
 		question = Question(**self.cleaned_data)
+		question.author = self.instance.author
 
 		question.save()
 		return question
@@ -37,16 +34,47 @@ class AnswerForm(ModelForm):
 		fields = ['text', 'question']
 		widgets = {'question': forms.HiddenInput()}
 
-	# def __init__(self, question):
-	# 	self.question = question
-
 	def clean(self):
 		return super(AnswerForm, self).clean()
 
 
 	def save(self):
-		# self.cleaned_data['author'] = self._user
 		answer = Answer(**self.cleaned_data)
+		answer.author = self.instance.author
 
 		answer.save()
 		return answer
+
+# username - имя пользователя, логин
+# email - email пользователя
+# password - пароль пользователя
+class NewUserForm(ModelForm):
+	class Meta:
+		model = User
+		fields = ['username', 'email', 'password']
+		widgets = { 'password': forms.PasswordInput(),}
+
+	def clean(self):
+		return super(NewUserForm, self).clean()
+
+	def save(self):
+		user = User.objects.create_user(**self.cleaned_data)
+
+		user.save()
+		return user
+
+# username - имя пользователя, логин
+# password - пароль пользователя
+class LoginForm(forms.Form):
+	username = forms.CharField()
+	password = forms.CharField(widget=forms.PasswordInput())
+	# class Meta:
+	# 	model = User
+	# 	fields = ['username', 'password']
+	# 	widgets = { 'password': forms.PasswordInput(),}
+
+	def clean(self):
+		return super(LoginForm, self).clean()
+
+	def save(self):
+		pass

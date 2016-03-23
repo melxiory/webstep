@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from django.shortcuts import render, get_object_or_404
 from django.views.decorators.http import require_GET
 from django.http import HttpResponse, HttpResponseRedirect, Http404
@@ -5,7 +6,11 @@ from django.shortcuts import render
 from django.core.paginator import Paginator, EmptyPage
 
 from .models import Question
-from .forms import AskForm, AnswerForm
+from django.contrib.auth.models import User
+from django.contrib.auth import authenticate, login
+from .forms import AskForm, AnswerForm, NewUserForm, LoginForm
+
+from django.contrib.auth.decorators import login_required
 
 
 def test(request, *args, **kwargs):
@@ -32,6 +37,8 @@ def question_details(request, question_id):
 def question_add(request):
 	if request.method == 'POST':
 		form = AskForm(request.POST)
+		import pdb; pdb.set_trace()
+		form.instance.author = request.user
 		if form.is_valid():
 			question = form.save()
 			url = question.get_absolute_url()
@@ -40,9 +47,41 @@ def question_add(request):
 		form = AskForm()
 	return render(request, 'question/add.html', {'form' : form})
 
+def signup(request):
+	if request.method == 'POST':
+		form = NewUserForm(request.POST)
+		if form.is_valid():
+			user = form.save()
+			user = authenticate(username=user.username, password=form.cleaned_data['password'])
+			if user is not None:
+				# залогинить нового пользователя
+				login(request, user)
+				# отправить нового пользователя на главную страницу
+				return HttpResponseRedirect('/')
+	else:
+		form = NewUserForm()
+	return render(request, 'user/signup.html', {'form' : form})
+
+def login_view(request):
+	if request.method == 'POST':
+		form = LoginForm(request.POST)
+		if form.is_valid():
+			user = authenticate(username=form.cleaned_data['username'], password=form.cleaned_data['password'])
+			if user is not None:
+				if user.is_active:
+					login(request, user)
+					# отправить пользователя на главную страницу
+					return HttpResponseRedirect('/')
+	else:
+		form = LoginForm()
+	return render(request, 'user/login.html', {'form' : form})
+
+
+# @login_required
 def answer_add(request):
 	if request.method == 'POST':
 		form = AnswerForm(request.POST)
+		form.instance.author = request.user
 		if form.is_valid():
 			answer = form.save()
 			url = answer.question.get_absolute_url()

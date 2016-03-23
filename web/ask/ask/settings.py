@@ -50,6 +50,11 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
 
+#Authentication backends
+AUTHENTICATION_BACKENDS = (
+        'django.contrib.auth.backends.ModelBackend',
+    )
+
 ROOT_URLCONF = 'ask.urls'
 
 WSGI_APPLICATION = 'ask.wsgi.application'
