@@ -11,6 +11,7 @@ from django.contrib.auth import authenticate, login
 from .forms import AskForm, AnswerForm, NewUserForm, LoginForm
 
 from django.contrib.auth.decorators import login_required
+import logging
 
 
 def test(request, *args, **kwargs):
@@ -49,7 +50,9 @@ def question_add(request):
 
 def signup(request):
 	if request.method == 'POST':
+		logger = logging.getLogger(__name__)
 		form = NewUserForm(request.POST)
+		logger.error(str(form))
 		if form.is_valid():
 			user = form.save()
 			user = authenticate(username=user.username, password=form.cleaned_data['password'])

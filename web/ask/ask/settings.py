@@ -87,7 +87,7 @@ LOGGING = {
 		'file': {
 			'level': 'DEBUG',
 			'class': 'logging.FileHandler',
-			'filename': 'mysite.log'
+			'filename': 'mysite.log',
 			'formatter': 'simple'
 		},
 	},
@@ -96,7 +96,11 @@ LOGGING = {
 			'handlers' : ['file'],
 			'propagate' : True,
 			'level': DEBUG,
-		}
+		},
+        'qa': {
+            'handlers': ['file'],
+            'level': 'DEBUG',
+        },
 	},
 }
 
