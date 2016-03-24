@@ -78,6 +78,28 @@ DATABASES = {
     }
 }
 
+LOGGING = {
+	'version' : 1,
+	'formatters': {
+		'simple': { 'format': '%(levelname)s %(message)s' }, 
+	},
+	'handlers': {
+		'file': {
+			'level': 'DEBUG',
+			'class': 'logging.FileHandler',
+			'filename': 'mysite.log'
+			'formatter': 'simple'
+		},
+	},
+	'loggers': {
+		'django': {
+			'handlers' : ['file'],
+			'propagate' : True,
+			'level': DEBUG,
+		}
+	},
+}
+
 # Internationalization
 # https://docs.djangoproject.com/en/1.6/topics/i18n/
 
