@@ -64,13 +64,17 @@ WSGI_APPLICATION = 'ask.wsgi.application'
 # https://docs.djangoproject.com/en/1.6/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'qa',
-        'USER': 'root',
-        'PASSWORD': '',
-        'HOST': 'localhost',
-        'PORT': '',
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.mysql',
+    #     'NAME': 'qa',
+    #     'USER': 'root',
+    #     'PASSWORD': '',
+    #     'HOST': 'localhost',
+    #     'PORT': '',
+    # }
+    'default' : {
+        'ENGINE' : 'django.db.backends.sqlite3',
+        'NAME': os.path.join(os.path.abspath(os.path.dirname(__file__)), 'qa.db')
     }
 }
 
