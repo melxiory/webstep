@@ -52,7 +52,7 @@ MIDDLEWARE_CLASSES = (
 
 ROOT_URLCONF = 'ask.urls'
 
-TEMPLATE_DIRS = (os.path.join(BASE_DIR, 'templates'))
+TEMPLATE_DIRS = (os.path.join(BASE_DIR, 'qa/templates'))
 
 WSGI_APPLICATION = 'ask.wsgi.application'
 
