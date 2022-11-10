@@ -53,7 +53,7 @@ MIDDLEWARE_CLASSES = (
 ROOT_URLCONF = 'ask.urls'
 
 TEMPLATE_DIRS = (
-    BASE_DIR + '/qa/templates/',
+    BASE_DIR + '/qa/templates/question/',
 )
 
 WSGI_APPLICATION = 'ask.wsgi.application'
